@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000
 app.get("/", errorHandlers, async (req, res, next) => {
     try {
 
-        res.send("welcome to index")
+        res.send("welcome sjlgjkas index")
     }
     catch (err) {
         next(err)  //so that server doesnt break
