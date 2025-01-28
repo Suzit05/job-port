@@ -4,6 +4,7 @@ const errorHandlers = require("./middleware/errorHandlers")
 const userRoutes = require("./routes/user")
 const dotenv = require("dotenv")
 dotenv.config()
+const mongoose = require("mongoose")
 
 
 app.use(errorHandlers)
@@ -25,4 +26,14 @@ app.get("/", errorHandlers, async (req, res, next) => {
 
 app.listen(PORT, () => {
     console.log(`listening on ${PORT}`)
+    mongoose.connect(process.env.MONGODB_URI, {
+
+    })
+        .then(() => {
+            console.log('Connected to MongoDB');
+        })
+        .catch((error) => {
+            console.error('Error connecting to MongoDB:', error);
+        });
+
 })
