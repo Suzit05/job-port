@@ -27,11 +27,22 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
     try {
         const { name, email, password } = req.body
-        //start coding from here
-        bcrypt.compare(password, hashPassword, function (err, result) {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: " Invalid credentials " });
+        }
 
-        })
+        const isPasswordCorrect = await bcrypt.compare(password, user.password)
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ message: "Invalid credentials" })
+        }
+        const payload = {
+            id: user._id,
+            name: user.name,
+        }
 
+        const token = jwt.sign(payload, process.env.SECRET_KEY);
+        res.json({ token, message: "Login successfully" }).status(200)
     }
     catch (err) {
         next(err)
